@@ -1,76 +1,221 @@
 # CV Defect Detector
 
-A compact PyTorch image-classification pipeline for visual quality inspection. It creates a small synthetic tile dataset, trains a CNN, stores evaluation artifacts, and serves single-image predictions through FastAPI.
+A compact computer vision pipeline for automated visual defect detection using :contentReference[oaicite:0]{index=0} and :contentReference[oaicite:1]{index=1}.
 
-## Quick Run
+The project generates a synthetic image dataset, trains a convolutional neural network (CNN) for binary classification (`normal` vs `defective`), evaluates model performance, and exposes inference through both CLI utilities and a REST API.
+
+---
+
+## Features
+
+- Synthetic image dataset generation for reproducible experiments
+- CNN-based binary image classification
+- Training and evaluation pipeline with saved metrics and plots
+- FastAPI inference service with Swagger/OpenAPI documentation
+- CLI utilities for prediction and evaluation
+- Automated tests using `pytest`
+- Saved artifacts including:
+  - trained model
+  - confusion matrix
+  - training curves
+  - prediction visualizations
+
+---
+
+## Tech Stack
+
+- Python
+- PyTorch
+- FastAPI
+- NumPy
+- Pillow
+- Matplotlib
+- Pytest
+
+---
+
+## Quick Start
+
+### Create Virtual Environment
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-python scripts/generate_dataset.py --overwrite
-python scripts/train.py --epochs 8
-python scripts/predict.py data/processed/synthetic_defects/val/defective/defective_0000.png --plot-path artifacts/predictions/defective_prediction.png
-pytest
+python -m venv .venv
 ```
 
-Start the API with:
+### Activate Environment
+
+**Linux/macOS**
+
+```bash
+source .venv/bin/activate
+```
+
+**Windows PowerShell**
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+### Install Dependencies
+
+```bash
+pip install -e ".[dev]"
+```
+
+---
+
+## Generate Dataset
+
+```bash
+python scripts/generate_dataset.py --overwrite
+```
+
+Generated images will be stored under:
+
+```text
+data/processed/synthetic_defects/
+```
+
+---
+
+## Train Model
+
+```bash
+python scripts/train.py --epochs 8
+```
+
+Training artifacts are saved under:
+
+```text
+artifacts/
+```
+
+Including:
+- trained model weights
+- metrics
+- confusion matrix
+- training plots
+
+---
+
+## Run Prediction
+
+```bash
+python scripts/predict.py \
+data/processed/synthetic_defects/val/defective/defective_0000.png \
+--plot-path artifacts/predictions/defective_prediction.png
+```
+
+---
+
+## Run API
+
+Start the FastAPI server:
 
 ```bash
 uvicorn defect_detector.api.main:app --reload
 ```
 
-Open `http://localhost:8000/docs`.
-
-## Screenshots
-
-These images come from the generated dataset, saved training artifacts, prediction output, and the running FastAPI documentation page.
-
-To refresh the same surfaces locally:
-
-```bash
-python scripts/generate_dataset.py --overwrite
-python scripts/train.py --epochs 8
-python scripts/predict.py data/processed/synthetic_defects/val/defective/defective_0000.png --plot-path artifacts/predictions/defective_prediction.png
-PYTHONPATH=src uvicorn defect_detector.api.main:app --reload
-```
-
-Then open `http://localhost:8000/docs`. The screenshots below correspond to the generated files under `data/processed/`, `artifacts/reports/`, `artifacts/predictions/`, and the live Swagger UI.
-
-![Dataset examples](docs/screenshots/dataset-examples.png)
-
-![Training metrics](docs/screenshots/training-metrics.png)
-
-![Confusion matrix](docs/screenshots/confusion-matrix.png)
-
-![Prediction output](docs/screenshots/prediction-output.png)
-
-![FastAPI docs](docs/screenshots/fastapi-docs.png)
-
-## What It Does
-
-- Builds reproducible `normal` and `defective` image folders.
-- Trains and evaluates a binary CNN with accuracy, precision, recall, F1, and a confusion matrix.
-- Saves the model to `artifacts/models/defect_cnn.pt`.
-- Provides CLI scripts for data generation, training, evaluation, and prediction.
-- Exposes `/health` and `/predict` endpoints for inference.
-
-## Repository Layout
+Open Swagger UI:
 
 ```text
-src/defect_detector/      model, dataset, training, inference, API
-scripts/                  command-line entry points
-tests/                    data, model, training, and API tests
-data/processed/           generated image dataset
-artifacts/                model, metrics, plots, prediction output
-docs/screenshots/         README images
+http://localhost:8000/docs
 ```
 
-## Useful Commands
+Available endpoints:
+- `GET /health`
+- `POST /predict`
+
+---
+
+## Run Tests
+
+```bash
+pytest
+```
+
+Additional examples:
 
 ```bash
 python scripts/evaluate.py
 python -m pytest tests/test_api.py
 ```
 
-Keywords: python, pytorch, computer vision, image classification, fastapi, pytest
+---
+
+## Screenshots
+
+The screenshots below were generated from real project execution, including:
+- generated dataset samples
+- training metrics
+- prediction output
+- FastAPI Swagger/OpenAPI documentation
+
+### Dataset Examples
+
+![Dataset examples](docs/screenshots/dataset-examples.png)
+
+### Training Metrics
+
+![Training metrics](docs/screenshots/training-metrics.png)
+
+### Confusion Matrix
+
+![Confusion matrix](docs/screenshots/confusion-matrix.png)
+
+### Prediction Output
+
+![Prediction output](docs/screenshots/prediction-output.png)
+
+### FastAPI Swagger UI
+
+![FastAPI docs](docs/screenshots/fastapi-docs.png)
+
+---
+
+## Repository Structure
+
+```text
+src/defect_detector/
+    model, dataset, training, inference, API
+
+scripts/
+    command-line entry points
+
+tests/
+    training, inference, and API tests
+
+data/processed/
+    generated synthetic dataset
+
+artifacts/
+    trained models, reports, metrics, plots
+
+docs/screenshots/
+    README screenshots
+```
+
+---
+
+## Example Workflow
+
+```bash
+python scripts/generate_dataset.py --overwrite
+python scripts/train.py --epochs 8
+python scripts/evaluate.py
+
+uvicorn defect_detector.api.main:app --reload
+```
+
+---
+
+## Output Artifacts
+
+Example generated outputs:
+
+```text
+artifacts/models/defect_cnn.pt
+artifacts/reports/confusion_matrix.png
+artifacts/reports/training_metrics.json
+artifacts/predictions/defective_prediction.png
+```
