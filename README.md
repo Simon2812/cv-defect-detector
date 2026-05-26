@@ -1,6 +1,6 @@
 # CV Defect Detector
 
-A compact computer vision pipeline for automated visual defect detection using :contentReference[oaicite:0]{index=0} and :contentReference[oaicite:1]{index=1}.
+A compact computer vision pipeline for automated visual defect detection using PyTorch and FastAPI.
 
 The project generates a synthetic image dataset, trains a convolutional neural network (CNN) for binary classification (`normal` vs `defective`), evaluates model performance, and exposes inference through both CLI utilities and a REST API.
 
