@@ -219,3 +219,12 @@ artifacts/reports/confusion_matrix.png
 artifacts/reports/training_metrics.json
 artifacts/predictions/defective_prediction.png
 ```
+
+## Future Improvements
+
+- Add support for real industrial image datasets.
+- Improve model accuracy using transfer learning and data augmentation.
+- Add multi-class defect classification and object localization.
+- Containerize the API with Docker and CI/CD pipelines.
+- Support GPU inference and batch prediction endpoints.
+- Extend reporting with model monitoring and performance dashboards.
